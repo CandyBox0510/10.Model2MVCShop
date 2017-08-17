@@ -32,6 +32,8 @@
 			self.location = "/purchase/cancelWishPurchase?wishNo="+$(this).find('input').val();
 		})
 		
+		
+		$(".ct_list_pop:nth-child(2n+5)").css("background-color" , "PapayaWhip");
 	})
 </script>
 </head>

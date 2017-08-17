@@ -4,11 +4,19 @@
     
 <html>
 <head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <title>${param.menu eq "search" ? "상품목록조회" : "상품 관리"}</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
+
 
  <c:if test="${wishSuccess eq 'success'}">
 	 <script type="text/javascript">
@@ -18,35 +26,92 @@
 	</script>
  </c:if>
 
-<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
 	function fncGetList(currentPage) {
 		$('#currentPage').val(currentPage);
-		$('form').attr("method" , "POST").attr("action" , "/product/listProduct?menu="+$(this).find("input[type='hidden']")).submit();		
+		
+		$('form').attr("method" , "POST").attr("action" , "/product/listProduct?menu=${param.menu}").submit();
 	}
 	
 	$(function(){
 		
 		 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
-				fncGetList(1);
+					
+			 fncGetList(1);
 		 });
+
 		 
-		  /* $(".ct_list_pop td:nth-child(3)").on("click", function(){
+		 $(".ct_list_pop td:nth-child(3)").tooltip({
+				
+				items:'[data-photo]',
+				content:function(){
+						var photo = $(this).data('photo');
+					 return '<img src=../images/uploadFiles/'+photo+'/>';
+				 },
+				 classes: { "ui-tooltip": "highlight"},
+				 show: { effect: "blind", duration: 500 }
+		})
+			
+		
+		
+		 //상품명 클릭시 getProduct
+		  $(".ct_list_pop td:nth-child(3)").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
 			 console.log("히든2 : "+$($(this).find('input')[1]).val());
 			 self.location = "/product/getProduct?prodNo="+$(this).find('input').val()+"&menu="+$($(this).find('input')[1]).val();
-		 }) */
+		 }) 
 		 
-		 $(".ct_list_pop td:nth-child(3)").tooltip({
-			 content:"d";
+		  $(".ct_list_pop td:nth-child(3)").each(function(index){
+			 if($($(this).find('input')[2]).val() != ''){   //현재 판매중이 아니면
+				 if("${param.menu}" != "manage"){ //매니저가 아니면
+				 	$(this).html('<del>'+$(this).html()+'</del>'); //삭선표시
+				 }else{
+					switch($($(this).find('input')[2]).val()){
+						case '1' :
+						$(this).css("color" , "blue");
+						break;
+						case '2' : 
+						$(this).css("color" , "green");
+						break;
+						case '3' : 
+						$(this).css("color" , "red");
+						break;
+					}
+				 }
+			 }
 		 })
+		 
 		 
 		 $(".ct_list_pop td:nth-child(9) span").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
 			 self.location = "/purchase/updateTranCodeByProd?prodNo="+$(this).find('input').val()+"&tranCode=2";
 		 })
+		 
+		 
+		  $(".ct_list_pop td:nth-child(9)").each(function(index){
+			 if($($(this).find('input')[0]).val() != ''){   //현재 판매중이 아니면
+				 if("${param.menu}" == "manage"){
+					switch($($(this).find('input')[0]).val()){
+						case '1' :
+						$(this).css("color" , "blue");
+						break;
+						case '2' : 
+						$(this).css("color" , "green");
+						break;
+						case '3' : 
+						$(this).css("color" , "red");
+						break;
+					}
+				 }
+			 }else{
+				 if("${param.menu}" != "manage"){
+				 	$(this).css("color","red");
+				 }
+			 }
+		 })
+		 
 		 
 		 $(".ct_list_pop td:nth-child(11)").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
@@ -54,6 +119,9 @@
 			 self.location = "/purchase/addWishPurchase?prodNo="+$(this).find('input').val();
 			 }
 		 })
+		 
+		 $(".ct_list_pop:nth-child(4n+6)").css("background-color" , "PapayaWhip");
+		 
 	})
 </script>
 </head>
@@ -63,8 +131,6 @@
 <div style="width:98%; margin-left:10px;">
 
 <form name="detailForm">
-
-<input type="hidden" value=${param.menu }>
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -128,8 +194,17 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:10px;">
 	<tr>
+		<td colspan="4" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지&nbsp;&nbsp;&nbsp;</td>
+		<c:if test="${param.menu eq 'manage' }">
+			<td colspan="7">
+			<font color="black">■ 판매중&nbsp;</font>
+			<font color="blue">■ 구매완료/배송하기&nbsp;</font>
+			<font color="green">■ 배송중&nbsp;</font>
+			<font color="red">■ 배송완료</font>
+			</td>
+			
 
-		<td colspan="11" >전체 ${resultPage.totalCount} 건수, 현재 ${resultPage.currentPage} 페이지</td>
+		</c:if>
 	</tr>
 
 	<tr>
@@ -166,10 +241,11 @@
 			<tr class="ct_list_pop">
 				<td align="center">${i}</td>
 				<td></td>		
-				<td align="left" title=${product.fileName }>
+				<td align="left" data-photo=${product.fileName }>
 					<%-- <a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a> --%>
 					<input type="hidden" value="${product.prodNo}">
 					<input type="hidden" value="${param.menu}">
+					<input type="hidden" value="${product.tranStatusCode }">
 					${product.prodName }
 				</td>	
 				<td></td>
@@ -178,7 +254,7 @@
 				<td align="left">${product.regDate }</td>
 				<td></td>
 				<td align="left">
-				 
+						<input type="hidden" value="${product.tranStatusCode }">
 						<c:if test="${!empty param.menu && param.menu eq 'search'}">		
 							<c:choose>
 								<c:when test="${product.tranStatusCode eq null }">
@@ -198,7 +274,6 @@
 							<c:choose>
 								<c:when test="${product.tranStatusCode eq 1 }">
 									<%-- 구매완료 / <a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a> --%>
-									
 									구매완료 / <span>배송하기<input type="hidden" value=${product.prodNo }></span>
 								</c:when>
 								<c:when test="${product.tranStatusCode eq 2 }">

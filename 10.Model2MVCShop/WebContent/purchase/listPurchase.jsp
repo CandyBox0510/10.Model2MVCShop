@@ -39,6 +39,9 @@
 				self.location = url;
 			}
 		})
+		
+		$(".ct_list_pop:nth-child(2n+5)").css("background-color" , "PapayaWhip");
+			
 	})
 </script>
 </head>

@@ -20,8 +20,9 @@
 		
 		$("tr.ct_list_pop td:nth-child(3)").on("click" , function(){
 			self.location = "/product/getProduct?comePath=saleList&menu=search&prodNo="+$(this).find('input').val();
-			}
 		})
+		
+		$(".ct_list_pop:nth-child(2n+5)").css("background-color" , "PapayaWhip");
 	})
 </script>
 </head>
