@@ -77,9 +77,13 @@ public class UserRestController {
 	
 	@RequestMapping(value="/json/login", method=RequestMethod.POST)
 	public User login(@RequestBody User user,
-							HttpServletRequest request,HttpSession session) throws Exception{
+							HttpServletRequest request,HttpSession session,
+							HttpServletResponse response) throws Exception{
+		
+		System.out.println("여기 유저 "+user);
 		User dbVO = userService.loginUser(user);
 		if(dbVO == null){
+			System.out.println("백퍼여기");
 			request.setAttribute("loginFail", "fail");
 			return dbVO;
 		}

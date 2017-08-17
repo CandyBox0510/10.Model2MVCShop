@@ -7,6 +7,8 @@
 <title>${param.menu eq "search" ? "상품목록조회" : "상품 관리"}</title>
 
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
 
  <c:if test="${wishSuccess eq 'success'}">
 	 <script type="text/javascript">
@@ -17,6 +19,7 @@
  </c:if>
 
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
 	// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
 	function fncGetList(currentPage) {
@@ -29,22 +32,26 @@
 		 $( "td.ct_btn01:contains('검색')" ).on("click" , function() {
 				fncGetList(1);
 		 });
-		
-		 $(".ct_list_pop td:nth-child(3)").on("click", function(){
+		 
+		  /* $(".ct_list_pop td:nth-child(3)").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
 			 console.log("히든2 : "+$($(this).find('input')[1]).val());
-			 self.location = "/product/getProduct?prodNo="+$(this).find('input').val()+"&menu="+$($(this).find('input')[1]).val()
+			 self.location = "/product/getProduct?prodNo="+$(this).find('input').val()+"&menu="+$($(this).find('input')[1]).val();
+		 }) */
+		 
+		 $(".ct_list_pop td:nth-child(3)").tooltip({
+			 content:"d";
 		 })
 		 
 		 $(".ct_list_pop td:nth-child(9) span").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
-			 self.location = "/purchase/updateTranCodeByProd?prodNo="+$(this).find('input').val()+"&tranCode=2"
+			 self.location = "/purchase/updateTranCodeByProd?prodNo="+$(this).find('input').val()+"&tranCode=2";
 		 })
 		 
 		 $(".ct_list_pop td:nth-child(11)").on("click", function(){
 			 console.log("히든1 : "+$(this).find('input').val());
 			 if($(this).find('input').val() != null){
-			 self.location = "/purchase/addWishPurchase?prodNo="+$(this).find('input').val()
+			 self.location = "/purchase/addWishPurchase?prodNo="+$(this).find('input').val();
 			 }
 		 })
 	})
@@ -159,7 +166,7 @@
 			<tr class="ct_list_pop">
 				<td align="center">${i}</td>
 				<td></td>		
-				<td align="left">
+				<td align="left" title=${product.fileName }>
 					<%-- <a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a> --%>
 					<input type="hidden" value="${product.prodNo}">
 					<input type="hidden" value="${param.menu}">
