@@ -40,15 +40,12 @@ public class UserRestController {
 		System.out.println("UserRestController Default Constructor");
 	}
 	
-	//@RequestMapping(value="checkDuplication", method=RequestMethod.POST)
-	public String checkDuplication(@RequestParam("userId") String userId, HttpServletRequest request,
-										HttpServletResponse response) throws Exception{
+	@RequestMapping(value="/json/checkDuplication/{userId}", method=RequestMethod.GET)
+	public boolean checkDuplication(@PathVariable("userId") String userId) throws Exception{
+		
 		boolean result = userService.checkDuplication(userId);
 		
-		request.setAttribute("result", new Boolean(result));
-		request.setAttribute("userId", userId);
-		
-		return "forward:/user/checkDuplication.jsp";
+		return result;
 	}
 	
 	//@RequestMapping( value="addUser", method=RequestMethod.GET )

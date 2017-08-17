@@ -179,6 +179,40 @@
 											"left=300,top=200,width=300,height=200,marginwidth=0,marginheight=0,"+
 											"scrollbars=no,scrolling=no,menubar=no,resizable=no");
 			});
+			
+			
+			$("table[width='100%'] tr td input[name='userId']").on("keyup",function(){
+				var inputId = $(this).val();
+				var result = '';
+				$.ajax(
+						{
+							async : false,
+							url : "/user/json/checkDuplication/"+inputId,	
+							method : "GET",
+							success : function(JSONData, status){
+								
+								if(JSONData != null){
+									if(JSONData){
+										result = "사용 가능";
+									}else{
+										result = "사용 불가능";
+									}
+								}
+							}//seccess end
+						}
+					)//ajax end
+				if(result == '사용 가능'){
+					$("font").text(result).css("color", "blue");	
+				}else if(result == ''){
+					$("font").text('');
+				}
+				else{
+					$("font").text(result).css("color", "red");
+				}
+				
+
+			})
+			
 		});	
 
 	</script>		
@@ -227,7 +261,8 @@
 				<tr>
 					<td width="105">
 						<input 	type="text" name="userId" class="ct_input_bg" 
-										style="width:100px; height:19px"  maxLength="20" >
+										value="아이디 입력" style="width:100px; height:19px"  maxLength="20" >
+						<font></font>
 					</td>
 					<td>
 						<table border="0" cellspacing="0" cellpadding="0">
