@@ -1,6 +1,7 @@
 package com.model2.mvc.web.product;
 
 import java.io.File;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -236,6 +238,19 @@ public class ProductRestController {
 		map.put("search", search);
 		
 		return map;
+	}
+	
+	
+	@RequestMapping(value="/json/autoListProduct", method=RequestMethod.POST)
+		public List<String> autoListProduct(@RequestBody String jsonString) throws Exception{
+
+		JSONObject jsonObject = (JSONObject)JSONValue.parse(jsonString);
+
+		String name = URLDecoder.decode(((String)jsonObject.get("name")), "UTF-8");		
+		
+		List<String> list = productService.getAutoProductList(name);	
+		
+		return list;
 	}
 	
 	//@RequestMapping(value="commentDelete", method=RequestMethod.GET)

@@ -32,4 +32,6 @@ public interface ProductDao {
 	public List<Comment> getProductComment(String prodNo) throws Exception;
 	
 	public void deleteProductComment(String commentNo) throws Exception;
+	
+	public List<String> getAutoProductList(String name) throws Exception;
 }

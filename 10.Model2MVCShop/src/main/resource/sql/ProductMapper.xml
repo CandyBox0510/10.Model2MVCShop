@@ -160,6 +160,12 @@
 						WHERE ROWNUM &lt;=${currentPage*pageUnit} )
 	WHERE row_seq BETWEEN ${(currentPage-1)*pageUnit+1} AND ${currentPage*pageUnit}
 	</select> 
+	
+	<select id="getAutoProductList" parameterType="string" resultType="string">
+	SELECT prod_name							
+	FROM product
+	WHERE prod_name LIKE '%${value}%'
+	</select> 
 								
 	
 	

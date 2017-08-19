@@ -206,7 +206,7 @@ public class PurchaseRestController {
 		map.put("prodNo", productService.getProductNo(Integer.parseInt(tranNo)));
 		productService.updateProductTranCode(map);
 		
-		return "forward:/purchase/listPurchase.do";
+		return "forward:/purchase/listPurchase";
 	}
 	
 	@RequestMapping(value="/json/updateTranCodeByProd",method=RequestMethod.GET)
@@ -218,7 +218,7 @@ public class PurchaseRestController {
 		purchaseService.updateTranCode(map);
 		productService.updateProductTranCode(map);
 				
-		return "forward:/product/listProduct.do?menu=manage";
+		return "forward:/product/listProduct?menu=manage";
 	}
 	
 	@RequestMapping(value="/json/cancelPurchase/{tranNo}", method=RequestMethod.GET)
@@ -230,7 +230,7 @@ public class PurchaseRestController {
 		productService.updateProductTranCode(map);
 		purchaseService.deletePurchase(tranNo);
 		
-		return "forward:/purchase/listPurchase.do";
+		return "forward:/purchase/listPurchase";
 	}
 	
 	@RequestMapping(value="/json/addWishPurchase/{prodNo}/{userId}", method=RequestMethod.GET)

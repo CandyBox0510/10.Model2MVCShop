@@ -79,4 +79,9 @@ public class ProductDaoImpl implements ProductDao {
 	public void deleteProductComment(String commentNo) throws Exception{
 		sqlSession.delete("ProductMapper.deleteProductComment",commentNo);
 	}
+	
+	@Override
+	public List<String> getAutoProductList(String name) throws Exception{
+		return sqlSession.selectList("ProductMapper.getAutoProductList", name);
+	}
 }

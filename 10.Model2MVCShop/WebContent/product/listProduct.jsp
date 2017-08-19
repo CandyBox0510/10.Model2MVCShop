@@ -6,7 +6,7 @@
 <head>
 
 
-<meta charset="utf-8">
+<meta charset="EUC-KR">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="/resources/demos/style.css">
@@ -38,7 +38,6 @@
 	$(function(){
 		
 		 $( "td.ct_btn01:contains('°Ë»ö')" ).on("click" , function() {
-					
 			 fncGetList(1);
 		 });
 
@@ -50,7 +49,7 @@
 						var photo = $(this).data('photo');
 					 return '<img src=../images/uploadFiles/'+photo+'/>';
 				 },
-				 classes: { "ui-tooltip": "highlight"},
+				 classes: { "ui-tooltip" : "highlight"},
 				 show: { effect: "blind", duration: 500 }
 		})
 			
@@ -122,9 +121,104 @@
 		 
 		 $(".ct_list_pop:nth-child(4n+6)").css("background-color" , "PapayaWhip");
 		 
+		var page = 1;
+		$( window ).scroll(function() {
+			 
+			 if ($(window).scrollTop() == $(document).height() - $(window).height()){
+				/* $.ajax({
+						url:"/product/json/listProduct",
+						method:"POST",
+						headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+						},
+						data:{
+							currentPage : page++,
+						},
+						
+						success : function(JSONData, status){
+										
+								
+						}
+						
+				})//end ajax  */
+				console.log(page++);
+			 }//end if¹®
+		}); 
+		
+		$( "input[name='searchKeyword']" ).autocomplete({
+			
+			source: function(request, response){
+
+           	 			$.ajax({
+					
+								async : false,
+						
+								method : "POST",
+								
+								url : "/product/json/autoListProduct/",
+								
+								headers : {
+											"Accept" : "application/json",
+											"Content-Type" : "application/json"
+										   },
+								
+								data : JSON.stringify({
+									
+										name : encodeURIComponent(request.term)
+										
+										}),
+								
+								success : function(JSONData, status){
+											 response(JSONData)
+										  }
+								})
+           			 }
+         });
+		
 	})
 </script>
 </head>
+
+
+<!--  $("input[name='searchKeyword']").on("keyup",function(){
+			
+			var input = $(this).val().trim();
+			if(input != ''){
+				$.ajax({
+					
+					async : false,
+					
+					method : "POST",
+					
+					url : "/product/json/autoListProduct/",
+					
+					headers : {
+						"Accept" : "application/json",
+						"Content-Type" : "application/json"
+					},
+					
+					data : JSON.stringify({
+						
+							name : encodeURIComponent(input)
+							
+							}),
+					
+					success : function(JSONData, status){
+						         $( "#abcd" ).autocomplete({
+						                     source: JSONData
+						                   });
+					}
+				})
+			}
+		})  -->
+
+
+
+
+
+
+
 
 <body bgcolor="#ffffff" text="#000000">
 
@@ -169,7 +263,7 @@
 			</select>
 			<input 	type="text" name="searchKeyword"  value="${search.searchKeyword}" 
 							class="ct_input_g" style="width:200px; height:19px" >
-			<!--  -->
+			
 		</td>	
 		
 		<td align="right" width="70">
@@ -242,7 +336,6 @@
 				<td align="center">${i}</td>
 				<td></td>		
 				<td align="left" data-photo=${product.fileName }>
-					<%-- <a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}">${product.prodName}</a> --%>
 					<input type="hidden" value="${product.prodNo}">
 					<input type="hidden" value="${param.menu}">
 					<input type="hidden" value="${product.tranStatusCode }">

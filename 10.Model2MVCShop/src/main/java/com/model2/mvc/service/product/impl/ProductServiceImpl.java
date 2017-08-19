@@ -90,4 +90,8 @@ public class ProductServiceImpl implements ProductService {
 		productDao.deleteProductComment(commentNo);
 	}
 	
+	@Override
+	public List<String> getAutoProductList(String name) throws Exception{
+		return productDao.getAutoProductList(name);
+	}
 }

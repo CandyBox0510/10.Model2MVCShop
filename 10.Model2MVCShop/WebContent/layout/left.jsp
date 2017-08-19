@@ -31,7 +31,7 @@ $(function(){
 	})
 	
 	$("td.Depth03:contains('판매상품관리')").on("click",function(){
-		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct.do?menu=manage");
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct?menu=manage");
 	})
 	
 	$("td.Depth03:contains('판매완료상품')").on("click",function(){
@@ -39,7 +39,7 @@ $(function(){
 	})
 	
 	$("td.Depth03:contains('상 품 검 색')").on("click",function(){
-		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct.do?menu=search");
+		$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listProduct?menu=search");
 	})
 	
 	$("td.Depth03:contains('구매이력조회')").on("click",function(){
