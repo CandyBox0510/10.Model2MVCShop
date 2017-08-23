@@ -187,7 +187,7 @@
 				$.ajax(
 						{
 							async : false,
-							url : "/user/json/checkDuplication/"+inputId,	
+							url : "/user/json/checkDuplication/"+encodeURIComponent(inputId),	
 							method : "GET",
 							success : function(JSONData, status){
 								
@@ -261,7 +261,7 @@
 				<tr>
 					<td width="105">
 						<input 	type="text" name="userId" class="ct_input_bg" 
-										value="아이디 입력" style="width:100px; height:19px"  maxLength="20" >
+										style="width:100px; height:19px"  maxLength="20" >
 						<font></font>
 					</td>
 					<td>

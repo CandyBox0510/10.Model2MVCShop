@@ -200,8 +200,15 @@ public class ProductRestController {
 	}
 	
 	@RequestMapping(value="/json/listProduct")
-	public Map<String,Object> listProduct(@ModelAttribute("search")Search search) throws Exception{
-
+	public Map<String,Object> listProduct(@ModelAttribute("search")Search search,
+											@RequestBody String jsonString) throws Exception{
+		System.out.println(jsonString+"dddddd");
+		JSONObject jo = (JSONObject)JSONValue.parse(jsonString);
+		System.out.println(jo+"dddddd");
+		System.out.println((Long)(jo.get("currentPage")));
+		//search.setCurrentPage((Integer)((Long)(jo.get("currentPage"))));
+		System.out.println(search.getCurrentPage()+"여기 커런트페이지인데?");
+		
 		if(search.getCurrentPage()==0){
 			search.setCurrentPage(1);
 		}
@@ -246,7 +253,7 @@ public class ProductRestController {
 
 		JSONObject jsonObject = (JSONObject)JSONValue.parse(jsonString);
 
-		String name = URLDecoder.decode(((String)jsonObject.get("name")), "UTF-8");		
+		String name = URLDecoder.decode(((String)jsonObject.get("name")), "UTF-8");
 		
 		List<String> list = productService.getAutoProductList(name);	
 		

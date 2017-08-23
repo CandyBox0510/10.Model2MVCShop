@@ -122,26 +122,120 @@
 		 $(".ct_list_pop:nth-child(4n+6)").css("background-color" , "PapayaWhip");
 		 
 		var page = 1;
+		var searchC = null;
+		var manageC = null;
+		var dlvy = null;
+		var wishes = null;
+		var all = '';
 		$( window ).scroll(function() {
 			 
 			 if ($(window).scrollTop() == $(document).height() - $(window).height()){
-				/* $.ajax({
+				 $.ajax({
 						url:"/product/json/listProduct",
 						method:"POST",
 						headers : {
 								"Accept" : "application/json",
 								"Content-Type" : "application/json"
 						},
-						data:{
-							currentPage : page++,
-						},
+						data:JSON.stringify({
+							currentPage : 2,
+						}),
 						
 						success : function(JSONData, status){
+								
+									var product = JSONData.list;
+									
+									console.log(JSONData.list[0]);
+									console.log(product[0]);
+									console.log(product[1]);
+									
+									
+									for(i in JSONData.list){
+		
 										
+										all = '<tr class="ct_list_pop">'+
+										'<td align="center">'+i+'</td>'+
+										'<td></td>'+
+										'<td align="left" data-photo='+product[i].fileName+'>'+
+											'<input type="hidden" value='+product[i].prodNo+'>'+
+											'<input type="hidden" value=search>'+
+											'<input type="hidden" value='+product[i].tranStatusCode + '>'+product[i].prodName+
+										'</td>'+	
+										'<td></td>'+
+										'<td align="left">'+product[i].price+'</td>'+
+										'<td></td>'+
+										'<td align="left">'+product[i].regDate+'</td>'+
+										'<td></td>'+
+										'<td align="left">'+
+												'<input type="hidden" value='+product[i].tranStatusCode + '>'
+													if(true){
+														switch(product[i].tranStatusCode){
+														case null :
+															searchC = '판매중';
+														break;
+														case 1 : 
+															searchC = '재고없음';
+														case 2 : 
+															searchC = '재고없음';
+														break;
+														case 3 : 
+															searchC = '판매완료';
+														break;
+														}
+													}
+													+searchC
+													
+													if(product[0].tranStatusCode != null ){
+														manageC = '재고없음';
+													}else{
+														manage = '판매중';
+													}
+													+manageC
+													
+												if(true){
+													
+													switch(product[i].tranStatusCode){
+													case 1 :
+														dlvy = '<span>배송하기<input type="hidden" value='+product[i].prodNo+'></span>';
+														break;
+													case 2 :
+														dlvy = '배송중';
+														break;
+													case 3 :
+														dlvy = '배송완료';
+														break;
+													default :
+														dlvy = '판매중';
+														break;
+													}
+												}
+										dlvy+'</td>'+
+										'<td></td>'
+										if(true){
+											wishes = '<td align="center">';
+												if(product[i].tranStatusCode != null){
+													wishes += '장바구니 불가(재고X)';
+												}
+												
+												if(product[i].tranStatusCode == null){
+													wishes += '<input type="hidden" value='+product[i].prodNo+'>장바구니 담기';
+												}
+										+wishes+'</td>'
+										}
+								+'</tr>'+
+							'<tr>'+
+								'<td colspan="11" bgcolor="D6D7D6" height="1"></td>'+
+							'</tr>'	
+							
+							console.log(all);
+							$(".ct_list_pop:nth-child(4)").html($(".ct_list_pop:nth-child(4)").html()+all);
+							}
+							
+							
 								
 						}
 						
-				})//end ajax  */
+				})//end ajax  
 				console.log(page++);
 			 }//end if문
 		}); 
@@ -366,7 +460,6 @@
 						<c:if test="${!empty param.menu && param.menu eq 'manage' }">
 							<c:choose>
 								<c:when test="${product.tranStatusCode eq 1 }">
-									<%-- 구매완료 / <a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=2">배송하기</a> --%>
 									구매완료 / <span>배송하기<input type="hidden" value=${product.prodNo }></span>
 								</c:when>
 								<c:when test="${product.tranStatusCode eq 2 }">

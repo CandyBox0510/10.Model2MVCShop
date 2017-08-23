@@ -1,5 +1,6 @@
 package com.model2.mvc.web.user;
 
+import java.net.URLDecoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +44,7 @@ public class UserRestController {
 	@RequestMapping(value="/json/checkDuplication/{userId}", method=RequestMethod.GET)
 	public boolean checkDuplication(@PathVariable("userId") String userId) throws Exception{
 		
-		boolean result = userService.checkDuplication(userId);
+		boolean result = userService.checkDuplication(URLDecoder.decode(userId, "UTF-8"));
 		
 		return result;
 	}
